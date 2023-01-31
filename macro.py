@@ -3,8 +3,8 @@ from ij.measure import ResultsTable
 import csv
 
 # Both of these need to be absolute paths
-grey = "/Users/korrytunnicliff/Desktop/test/grey.tif"
-csv_path = "/Users/korrytunnicliff/Desktop/test/output.csv"
+grey = "/Users/korrytunnicliff/Desktop/DyneinProtein/grey.tif"
+csv_path = "/Users/korrytunnicliff/Desktop/DyneinProtein/output.csv"
 
 # Open the greyscale image
 IJ.open(grey)

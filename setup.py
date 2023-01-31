@@ -1,9 +1,10 @@
+# Make sure that before you run this script, you delete any previous output.jpg or output.csv
+# The output.csv file will become larger than you want it to be if you run this script multiple times in a row
+
 import cv2
 import os
 import numpy as np
 import csv
-
-# Just as an fyi: PURPLE is for dynein, PINK is for cell
 
 csv_path = 'output.csv' # This can just be relative, meaning it's just going to be in the same folder
 image_path = 'color.tif' # Same as above
@@ -16,10 +17,16 @@ threshold2 = 255
 pixelBoxWidth = 2
 pixelBoxHeight = 2
 
+# When we're picking spots that are dynein proteins, we want to make sure we're not
+# picking a spot that is particularly bright. These values don't follow the same values as
+# RGB 0 < x < 255, they are usually lower
+filteringGreen = 17
+filteringRed = 10
+
 # This is for getting a point nearby in the cell to measure against the dynein protein
 minimum_green_intensity = 65
 
-header = ['xRed', 'yRed', 'xGreen', 'yGreen', 'redIntensity', 'greenIntensity']
+header = ['x_dynein', 'y_dynein', 'x_cell', 'y_cell', 'Dynein Intensity', 'Cell Intensity']
 
 if not os.path.exists(csv_path):
     with open(csv_path, 'w', newline='') as file:
@@ -31,6 +38,7 @@ color_image = cv2.imread(image_path)
 
 # Extract the red component of the colored image
 red_component = color_image[:,:,2]
+green_component = color_image[:,:,1]
 
 # Threshold the red component to create a binary image
 _, binary_image = cv2.threshold(red_component, threshold1, threshold2, cv2.THRESH_BINARY)
@@ -53,7 +61,7 @@ green_positions = []
 for contour in contours:
     # Get the minimum bounding rectangle for the contour
     x, y, w, h = cv2.boundingRect(contour)
-    if w >= pixelBoxWidth and h >= pixelBoxHeight:
+    if w >= pixelBoxWidth and h >= pixelBoxHeight and (green_component[x,y] > filteringGreen or red_component[x,y] > filteringRed):
         # Calculate the center of the bounding rectangle
         center_x = x + w // 2
         center_y = y + h // 2
@@ -77,11 +85,11 @@ for contour in contours:
         cv2.line(output_image, (center_x, center_y), green_position, (0, 255, 255), 1)
 
         # Draw an arrow on the output image pointing to the center
-        cv2.arrowedLine(output_image, (center_x, center_y), (center_x, center_y), (255, 0, 255), 5)
+        cv2.arrowedLine(output_image, (center_x, center_y), (center_x, center_y), (0, 0, 255), 5)
 
         for green_position in green_positions:
             # Draw a pink star on the output image for each green position
-            cv2.drawMarker(output_image, green_position, (255, 0, 128), cv2.MARKER_STAR, markerSize=3, thickness=2, line_type=cv2.LINE_AA)
+            cv2.drawMarker(output_image, green_position, (0, 255, 0), cv2.MARKER_STAR, markerSize=3, thickness=2, line_type=cv2.LINE_AA)
 
 # Write the data to a CSV file
 with open(csv_path, 'a', newline='') as file:
