@@ -23,8 +23,9 @@ pixelBoxHeight = 2
 filteringGreen = 17
 filteringRed = 10
 
-# This is for getting a point nearby in the cell to measure against the dynein protein
+# These are for getting a point nearby in the cell to measure against the dynein protein
 minimum_green_intensity = 65
+maximum_green_intensity = 100
 
 header = ['x_dynein', 'y_dynein', 'x_cell', 'y_cell', 'Dynein Intensity', 'Cell Intensity']
 
@@ -73,7 +74,7 @@ for contour in contours:
         for i in range(center_x-10, center_x+10):
             for j in range(center_y-10, center_y+10):
                 if i >= 0 and i < color_image.shape[1] and j >= 0 and j < color_image.shape[0]:
-                    if color_image[j, i, 1] > color_image[j, i, 0] and color_image[j, i, 1] > color_image[j, i, 2] and color_image[j, i, 1] > minimum_green_intensity:
+                    if color_image[j, i, 1] > color_image[j, i, 0] and color_image[j, i, 1] > color_image[j, i, 2] and color_image[j, i, 1] > minimum_green_intensity and color_image[j, i, 1] < maximum_green_intensity:
                         green_position = (i, j)
                         green_positions.append(green_position)
                         break
