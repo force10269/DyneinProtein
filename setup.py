@@ -24,38 +24,57 @@ spot_image_path = 'output/current_spot.jpg'
 # These are all variables you can shift around for different images
 # You aren't going to get all of the dynein proteins perfectly, but
 # with the current settings, you can get most of them accurately
+
 threshold1 = 125
 threshold2 = 255
 pixelBoxWidth = 2
 pixelBoxHeight = 2
+
+if input("Do you want to change the default search values for red spots? (y/n): ") == "y":
+    threshold1 = int(input("What do you want the lower threshold to be? (default is 125) (values between 0-255): "))
+    threshold2 = int(input("What do you want the higher threshold to be? (default is 255) (values between 0-255): "))
+    pixelBoxWidth = int(input("What do you want the pixel box width to be? (default is 2): "))
+    pixelBoxHeight = int(input("What do you want the pixel box height to be? (default is 2): "))
 
 filteringGreen = 7
 
 # These are for getting a point nearby in the cell to measure against the dynein protein
 minimum_green_intensity = 65
 maximum_green_intensity = 100
-
 greenSearchRange = 10
+
+if input("Do you want to change the default search values for green spots? (y/n): ") == "y":
+    minimum_green_intensity = int(input("What do you want the minimum intensity of green spots to be? (default is 65) (values between 0-255): "))
+    maximum_green_intensity = int(input("What do you want the maximum intensity of green spots to be? (default is 100) (values between 0-255): "))
+    greenSearchRange = int(input("What do you want the search range for green spots to be from the red spots? (default is 10 pixels): "))
+
+
 
 class App:
     def __init__(self, master=tk.Tk()):
         self.master = master
         self.fig_size = [800, 600]
-        self.frame = tk.Frame(master)
+        self.frame = tk.Frame(master, bg='lightgrey')
         self.canvas = tk.Canvas(self.frame, width=1280, height=800)
         self.canvas.pack()
                     
         self.image_label = tk.Label(self.canvas)
-        self.image_label.pack()
-        
-        self.filler_button = tk.Button(self.frame)
-        self.filler_button.pack(side="left")
+        self.image_label.pack(padx=10, pady=10)
 
-        self.button_left = tk.Button(self.frame, command=self.updateYes)
-        self.button_left.pack(side="left")
+        # Create the question label
+        self.question_label = tk.Label(self.frame, text="Is this accurate?")
+        self.question_label.pack(pady=10)
 
-        self.button_right = tk.Button(self.frame, command=self.updateNo)
-        self.button_right.pack(side="left")
+        self.button_frame = tk.Frame(self.frame, bg='lightgrey', pady=10)
+        self.button_frame.pack()
+
+        # Create the "Yes" button
+        self.button_yes = tk.Button(self.button_frame, text="Yes", command=self.updateYes, height=2, font=("Helvetica", 20), width=10)
+        self.button_yes.pack(side="left", padx=10)
+
+        # Create the "No" button
+        self.button_no = tk.Button(self.button_frame, text="No", command=self.updateNo, height=2, font=("Helvetica", 20), width=10)
+        self.button_no.pack(side="left", padx=10)
 
         self.frame.bind("q", self.close)
         self.frame.bind("<Escape>", self.close)
@@ -95,9 +114,9 @@ class App:
         self.frame.destroy()
         self.canvas.destroy()
         self.image_label.destroy()
-        self.filler_button.destroy()
-        self.button_left.destroy()
-        self.button_right.destroy()
+        self.question_label.destroy()
+        self.button_yes.destroy()
+        self.button_no.destroy()
 
     def is_closed(self):
         return not self.is_active
@@ -195,9 +214,6 @@ def process_image(contours, color_image):
             # out of the mainloop with the app and continue to work with the contours
             app = App()
             app.load_image(spot_image_path)
-            app.filler_button.config(text="-------------------------Is this accurate?-------------------------")
-            app.button_left.config(text="Yes")
-            app.button_right.config(text="No")
             app.mainloop()
             app.destroy_widgets()
 

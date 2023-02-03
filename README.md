@@ -33,4 +33,4 @@ This is still a WIP! I will be adding tutorial videos soon and will be hopefully
 - Adding an interface where the user can decide on what colors are being thresholded, how big the area has to be, threshold values, etc. Here, every time an option is changed, all marked spots would be previewed in a window
 - Adding an option for # of spots to be found nearby a primary spot (in this case, the dynein protein)
 - Housekeeping: More comments, modularizing more, reordering, possibly combining both scripts at some point down the road
-
+- Add a system image finder, where images are automatically detected in the input directory and added to the scripts
