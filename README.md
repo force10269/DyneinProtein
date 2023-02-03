@@ -8,14 +8,19 @@ To run these scripts, you need:
 - To have installed a few python libraries:
     - `pip install opencv-python`
     - `pip install tkinter`
-    - `pip install Pillow`
+    - `pip install pillow`
+    - `pip install python-dotenv`
+    - `pip install ast`
+    - `pip install numpy`
+    - `pip install csv`
+    - `pip install multiprocessing`
     - Any other libraries that you need to install that are included as import statements at the top of either `setup.py` or `macro.py`, you should run a `pip install <library-name>` command
 
 Here is the order of operations for running these scripts:
 
 0. ONLY IF YOU DONT NEED THE FILES IN THE OUTPUT DIRECTORY, perform `python reset.py`. We need to have a fresh directory so that we can produce a new dataset.
 
-1. Look in `setup.py` and `macro.py` by using a text editor. There is one in ImageJ, but you can also use other text editors (most commonly Visual Studio Code). You will want to change paths to file names here. If you want `setup.py` to run through multiple images, you are going to have to change the `all_images` array in `setup.py` (note that this array only contains colored images, whereas macro.py will be going through the respective grayscale images).
+1. You will notice that there is a .env.sample file in the directory. This is a crucial folder! First, perform `copy .env.sample .env` if you are on Windows, or `cp .env.sample .env` if you are on Mac. This will copy the file with all of the path variables in it. Now, you can go into .env, and replace all of the paths with the ones on your computer in the format that they currently are in. If you are wondering why we do this, it is because we don't want our paths or any sensitive information on our computers to be published to GitHub. .env.sample shows a template for how to put your paths in, and then you put your actual paths in .env, where they will never reach GitHub because of our .gitignore file. After you have set this file up, you will then go to macro.py and change just the `csv_w_paths` variable to get an absolute path all the way to the paths.csv file which will be produced by `setup.py`. Unfortunately, ImageJ does not work well with dotenv (the library supporting the .env file), so we have to change just this one path here. Paths from .env will be written to paths.csv in the output directory after `setup.py` runs, so all the proper paths can be read in by `macro.py`. Lots of information, I know, but look to the tutorials video folder for more info on this! 
 
 2. Run `setup.py` by running `python setup.py` in your terminal once you have gotten into the correct directory (in this case, the DyneinProtein directory)
 

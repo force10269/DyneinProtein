@@ -2,11 +2,13 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import time
 import os
+import ast
 import cv2
 import numpy as np
 import csv
-
 import multiprocessing
+from dotenv import load_dotenv
+load_dotenv()
 
 # Global variable
 # Important so that every time we get a user response,
@@ -15,7 +17,9 @@ import multiprocessing
 result = None
 
 # Paths for all images
-all_images = ['input/subject_404_0_color.tif', 'input/subject_404_1_color.tif', 'input/subject_404_2_color.tif', 'input/subject_404_3_color.tif']
+colored_path = os.getenv("COLORED_PATH")
+colored_files = ast.literal_eval(os.getenv("COLORED_FILES"))
+all_images = [os.path.join(colored_path, f) for f in colored_files]
 ctr = 0
 
 # Current spot output image path
@@ -48,8 +52,7 @@ if input("Do you want to change the default search values for green spots? (y/n)
     maximum_green_intensity = int(input("What do you want the maximum intensity of green spots to be? (default is 100) (values between 0-255): "))
     greenSearchRange = int(input("What do you want the search range for green spots to be from the red spots? (default is 10 pixels): "))
 
-
-
+# This is responsible for the window that shows the prompt and window at each processed contour
 class App:
     def __init__(self, master=tk.Tk()):
         self.master = master
@@ -280,4 +283,16 @@ if __name__ == "__main__":
         cv2.imwrite('output/output' + str(ctr) + '.jpg', output_image)
 
         ctr += 1
+    
+    # At the end, we want to pass the .env paths to the macro.py file
+    # ImageJ can't work with dotenv, so we have to do it this way
+    input_path = os.getenv("INPUT_PATH")
+    output_path = os.getenv("OUTPUT_PATH")
+    grey_files = ast.literal_eval(os.getenv("GREY_FILES"))
+
+    with open('output/paths.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([input_path, output_path])
+        writer.writerow([f for f in grey_files])
+
         

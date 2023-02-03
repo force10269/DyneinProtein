@@ -2,21 +2,23 @@ from ij import IJ
 from ij.measure import ResultsTable
 import csv
 
-# These have to be absolute paths
-grey_paths = [
-    "/Users/korrytunnicliff/Desktop/DyneinProtein/input/subject_404_0_grey.tif",
-    "/Users/korrytunnicliff/Desktop/DyneinProtein/input/subject_404_1_grey.tif",
-    "/Users/korrytunnicliff/Desktop/DyneinProtein/input/subject_404_2_grey.tif",
-    "/Users/korrytunnicliff/Desktop/DyneinProtein/input/subject_404_3_grey.tif",
-]
+# Read in the values of paths from paths.csv
+# Unfortunately we have to change this too
+csv_w_paths = '/Users/korrytunnicliff/Desktop/DyneinProtein/output/paths.csv'
 
+with open(csv_w_paths, 'r') as csvfile:
+	reader = csv.reader(csvfile)
+	input_path, output_path = next(reader)
+	grey_files = next(reader)
+
+grey_paths = [input_path + f for f in grey_files]
 csv_ctr = 0
 
 for grey in grey_paths:
     # Open the greyscale image
     IJ.open(grey)
 
-    csv_path = "/Users/korrytunnicliff/Desktop/DyneinProtein/output/output" + str(csv_ctr) + ".csv"
+    csv_path = output_path + "output" + str(csv_ctr) + ".csv"
 
     green_intensities = []
     red_intensities = []
