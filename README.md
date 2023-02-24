@@ -39,3 +39,6 @@ This is still a WIP! I will be adding tutorial videos soon and will be hopefully
 - Adding an option for # of spots to be found nearby a primary spot (in this case, the dynein protein)
 - Housekeeping: More comments, modularizing more, reordering, possibly combining both scripts at some point down the road
 - Add a system image finder, where images are automatically detected in the input directory and added to the scripts
+- Confidence interval to show % of how sure the program is that a spot is correct? If the difference between red and green is big, then we might be more confident
+- Express server, call endpoint that endpoint runs the python script to transition to a website
+- Host a website with React and Express which will be hosting the application and running the python scripts in the backend. Might be difficult with running the script in ImageJ (macro.py)?

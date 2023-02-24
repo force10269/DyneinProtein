@@ -92,21 +92,11 @@ class App:
     def updateYes(self, *args):
         global result
         result = 'y'
-        self.master.withdraw()
-        self.frame.pack_forget()
-        self.frame.pack()
-        self.master.update()
-        self.master.deiconify()
         self.close()
 
     def updateNo(self, *args):
         global result 
         result = 'n'
-        self.master.withdraw()
-        self.frame.pack_forget()
-        self.frame.pack()
-        self.master.update()
-        self.master.deiconify()
         self.close()
 
     def close(self, *args):
@@ -294,5 +284,3 @@ if __name__ == "__main__":
         writer = csv.writer(file)
         writer.writerow([input_path, output_path])
         writer.writerow([f for f in grey_files])
-
-        
