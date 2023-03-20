@@ -1,3 +1,7 @@
+### Dynein Protein Analysis
+![Dynein protein application modal](https://raw.githubusercontent.com/force10269/DyneinProtein/master/assets/README_1.png)
+![Dynein protein markers](https://raw.githubusercontent.com/force10269/DyneinProtein/master/assets/README_2.png)
+
 ### How to Run
 To run these scripts, you need:
 - Both a grayscale and a colored image to analyze in tandem
