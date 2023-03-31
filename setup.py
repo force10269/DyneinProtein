@@ -29,28 +29,42 @@ spot_image_path = 'output/current_spot.jpg'
 # You aren't going to get all of the dynein proteins perfectly, but
 # with the current settings, you can get most of them accurately
 
-threshold1 = 125
-threshold2 = 255
-pixelBoxWidth = 2
-pixelBoxHeight = 2
+# Default settings
+settings = {
+    "threshold1": 125,
+    "threshold2": 255,
+    "pixelBoxWidth": 2,
+    "pixelBoxHeight": 2,
+    "filteringGreen": 7,
+    "minimum_green_intensity": 65,
+    "maximum_green_intensity": 100,
+    "greenSearchRange": 10
+}
+
+# Get custom settings
+def get_custom_settings(setting_key, prompt):
+    settings[setting_key] = int(input(prompt))
 
 if input("Do you want to change the default search values for red spots? (y/n): ") == "y":
-    threshold1 = int(input("What do you want the lower threshold to be? (default is 125) (values between 0-255): "))
-    threshold2 = int(input("What do you want the higher threshold to be? (default is 255) (values between 0-255): "))
-    pixelBoxWidth = int(input("What do you want the pixel box width to be? (default is 2): "))
-    pixelBoxHeight = int(input("What do you want the pixel box height to be? (default is 2): "))
-
-filteringGreen = 7
-
-# These are for getting a point nearby in the cell to measure against the dynein protein
-minimum_green_intensity = 65
-maximum_green_intensity = 100
-greenSearchRange = 10
+    get_custom_settings("threshold1", "What do you want the lower threshold to be? (default is 125) (values between 0-255): ")
+    get_custom_settings("threshold2", "What do you want the higher threshold to be? (default is 255) (values between 0-255): ")
+    get_custom_settings("pixelBoxWidth", "What do you want the pixel box width to be? (default is 2): ")
+    get_custom_settings("pixelBoxHeight", "What do you want the pixel box height to be? (default is 2): ")
 
 if input("Do you want to change the default search values for green spots? (y/n): ") == "y":
-    minimum_green_intensity = int(input("What do you want the minimum intensity of green spots to be? (default is 65) (values between 0-255): "))
-    maximum_green_intensity = int(input("What do you want the maximum intensity of green spots to be? (default is 100) (values between 0-255): "))
-    greenSearchRange = int(input("What do you want the search range for green spots to be from the red spots? (default is 10 pixels): "))
+    get_custom_settings("minimum_green_intensity", "What do you want the minimum intensity of green spots to be? (default is 65) (values between 0-255): ")
+    get_custom_settings("maximum_green_intensity", "What do you want the maximum intensity of green spots to be? (default is 100) (values between 0-255): ")
+    get_custom_settings("greenSearchRange", "What do you want the search range for green spots to be from the red spots? (default is 10 pixels): ")
+
+# Update settings
+threshold1 = settings["threshold1"]
+threshold2 = settings["threshold2"]
+pixelBoxWidth = settings["pixelBoxWidth"]
+pixelBoxHeight = settings["pixelBoxHeight"]
+filteringGreen = settings["filteringGreen"]
+minimum_green_intensity = settings["minimum_green_intensity"]
+maximum_green_intensity = settings["maximum_green_intensity"]
+greenSearchRange = settings["greenSearchRange"]
 
 # This is responsible for the window that shows the prompt and window at each processed contour
 class App:
