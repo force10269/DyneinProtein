@@ -8,17 +8,9 @@ To run these scripts, you need:
 - ImageJ (or Fiji)
 - Python installed on your computer
 - Upgrade Python package manager to the latest version:
-    - python3 -m pip install --upgrade pip
+    - python -m pip install --upgrade pip
 - To have installed a few python libraries:
-    - `pip install opencv-python`
-    - `pip install tkinter`
-    - `pip install pillow`
-    - `pip install python-dotenv`
-    - `pip install ast`
-    - `pip install numpy`
-    - `pip install csv`
-    - `pip install multiprocessing`
-    - Any other libraries that you need to install that are included as import statements at the top of either `setup.py` or `macro.py`, you should run a `pip install <library-name>` command
+    - `pip install -r requirements.txt`
 
 Here is the order of operations for running these scripts:
 
@@ -33,9 +25,6 @@ Here is the order of operations for running these scripts:
 4. When the `setup.py` script is finished, we are going to have a number of files written to the `output` directory. In here, we will have a bunch of output images and CSV files. In the images, we have the colored images with the new markers on them. In the CSV files, we have all of the coordinates of the markers put onto the images.
 
 5. Open ImageJ. Click on Plugins > Macros > Edit > ... and then pick the macro.py script. Once this script is open, assuming that all of the paths are correct, you should be able to run script by pressing the run button in the ImageJ macro text editor. After this script has successfully finished, you will now have all of the intensity data written to each of the CSV files in the `output` directory. Note that when the script finishes, there isn't a message currently to indicate that it has finished, so pay attention to the ImageJ terminal area.
-
-### Information
-This is still a WIP! I will be adding tutorial videos soon and will be hopefully updating this to look better.
 
 ### TODO List:
 - Create tutorial videos on how to prepare to run the scripts, running the scripts, and miscellaneous information

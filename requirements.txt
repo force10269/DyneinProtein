@@ -1,0 +1,6 @@
+tk
+Pillow
+opencv-python
+numpy
+python-dotenv
+ImageJ
